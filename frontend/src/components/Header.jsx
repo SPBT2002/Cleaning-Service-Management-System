@@ -34,7 +34,12 @@ const Header = () => {
           Contact
         </a>
       </nav>
-      
+      <button
+        type="button"
+        className="rounded-2xl bg-gradient-to-br from-[#1ed0c8] to-[#33bdf6] px-5 py-2.5 font-semibold text-[#0b1020] shadow-[0_12px_24px_rgba(25,208,200,0.25)] transition hover:-translate-y-0.5"
+      >
+        Book Now
+      </button>
     </header>
   )
 }
