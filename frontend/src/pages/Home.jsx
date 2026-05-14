@@ -72,7 +72,17 @@ const Home = () => {
           className="relative order-first grid place-items-center lg:order-none"
           aria-label="Service preview"
         >
-          
+        <div className="relative h-[320px] w-full max-w-[460px] overflow-hidden rounded-[28px] border border-white/10 bg-gradient-to-b from-[#173255] to-[#0f223e] shadow-[0_30px_60px_rgba(5,10,24,0.6)]">
+            <img
+              className="h-full w-full object-cover opacity-80"
+              src="https://images.unsplash.com/photo-1527515637462-dafdaa5d079f?auto=format&fit=crop&w=1200&q=80"
+              alt="Bright, clean living room"
+            />
+            <div className="absolute inset-0 flex flex-col items-center justify-center bg-[linear-gradient(180deg,_rgba(11,18,34,0.25),_rgba(11,18,34,0.75))] text-center text-[#f5f7ff]">
+              <h4 className="font-['Sora'] text-[20px]">Professional Cleaning</h4>
+              <span className="text-[14px] text-[#a1b0cf]">Service Image</span>
+            </div>
+          </div>  
 
           <div className="absolute bottom-5 right-3 flex items-center gap-2.5 rounded-[18px] bg-[rgba(28,213,200,0.92)] px-4 py-3 text-[#0b1020] shadow-[0_20px_30px_rgba(13,206,196,0.3)] lg:-right-3">
             <div
