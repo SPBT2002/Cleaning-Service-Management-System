@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+
 const Header = () => {
   return (
     <header className="relative z-10 flex items-center justify-between gap-4 rounded-2xl border border-white/10 bg-[#0f2a42]/80 px-5 py-3 backdrop-blur-md">
@@ -18,12 +20,15 @@ const Header = () => {
         <span>CleanMaster</span>
       </div>
       <nav className="hidden gap-7 text-[15px] md:flex" aria-label="Primary">
-        <a href="#home" className="text-[#a1b0cf] transition-colors hover:text-[#f5f7ff]">
+        <Link to="/" className="text-[#a1b0cf] transition-colors hover:text-[#f5f7ff]">
           Home
-        </a>
-        <a href="#services" className="text-[#a1b0cf] transition-colors hover:text-[#f5f7ff]">
+        </Link>
+        <Link
+          to="/services"
+          className="text-[#a1b0cf] transition-colors hover:text-[#f5f7ff]"
+        >
           Services
-        </a>
+        </Link>
         <a href="#gallery" className="text-[#a1b0cf] transition-colors hover:text-[#f5f7ff]">
           Gallery
         </a>
