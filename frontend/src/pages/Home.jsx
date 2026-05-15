@@ -1,4 +1,5 @@
 import Header from '../components/Header'
+import ServicesSection from '../components/ServicesSection'
 
 const Home = () => {
   return (
@@ -113,6 +114,12 @@ const Home = () => {
           </button>
         </section>
       </main>
+
+      <div className="relative z-10 mt-16 -mx-[clamp(20px,6vw,72px)] bg-white/95 pb-20 pt-10">
+        <div className="px-[clamp(20px,6vw,72px)]">
+          <ServicesSection withContainer={false} />
+        </div>
+      </div>
     </div>
   )
 }
