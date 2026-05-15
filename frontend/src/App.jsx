@@ -1,7 +1,14 @@
+import { Route, Routes } from 'react-router-dom'
 import Home from './pages/Home'
+import Service from './pages/Service'
 
 function App() {
-  return <Home />
+  return (
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/services" element={<Service />} />
+    </Routes>
+  )
 }
 
 export default App
