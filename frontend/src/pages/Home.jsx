@@ -85,7 +85,7 @@ const Home = () => {
             </div>
           </div>  
 
-          <div className="absolute bottom-5 right-3 flex items-center gap-2.5 rounded-[18px] bg-[rgba(28,213,200,0.92)] px-4 py-3 text-[#0b1020] shadow-[0_20px_30px_rgba(13,206,196,0.3)] lg:-right-3">
+          <div className="absolute -bottom-1 right-3 flex items-center gap-2.5 rounded-[18px] bg-[rgba(28,213,200,0.92)] px-4 py-3 text-[#0b1020] shadow-[0_20px_30px_rgba(13,206,196,0.3)] lg:-right-3">
             <div
               className="grid h-[30px] w-[30px] place-items-center rounded-[12px] bg-[rgba(11,18,34,0.2)]"
               aria-hidden="true"
@@ -103,15 +103,6 @@ const Home = () => {
             </div>
           </div>
 
-          <button
-            className="absolute -bottom-9 -right-2 grid h-14 w-14 place-items-center rounded-full bg-gradient-to-br from-[#21d0c7] to-[#7cf7ce] shadow-[0_20px_30px_rgba(45,213,199,0.35)]"
-            type="button"
-            aria-label="Chat"
-          >
-            <svg viewBox="0 0 24 24" role="img" aria-hidden="true" className="h-6 w-6">
-              <path d="M4 5h16v10H7l-3 3V5z" fill="#0b1020" />
-            </svg>
-          </button>
         </section>
       </main>
 
