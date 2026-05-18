@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 
 const Header = () => {
   return (
-    <header className="relative z-10 flex min-h-[72px] items-center justify-between gap-4 rounded-2xl border border-white/10 bg-[#0f2a42]/80 px-6 py-4 backdrop-blur-md">
+    <header className="relative z-10 flex items-center justify-between gap-4 rounded-2xl border border-white/10 bg-[#0f2a42]/80 px-5 py-3 backdrop-blur-md">
       <div className="flex items-center gap-3 text-[20px] font-semibold text-[#f5f7ff]">
         <span className="grid h-9 w-9 place-items-center" aria-hidden="true">
           <svg viewBox="0 0 40 40" role="img" aria-hidden="true" className="h-9 w-9">
@@ -29,9 +29,12 @@ const Header = () => {
         >
           Services
         </Link>
-        <a href="#gallery" className="text-[#a1b0cf] transition-colors hover:text-[#f5f7ff]">
+        <Link
+          to="/gallery"
+          className="text-[#a1b0cf] transition-colors hover:text-[#f5f7ff]"
+        >
           Gallery
-        </a>
+        </Link>
         <a href="#reviews" className="text-[#a1b0cf] transition-colors hover:text-[#f5f7ff]">
           Reviews
         </a>
