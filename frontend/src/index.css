@@ -1,1 +1,6 @@
 @import "tailwindcss";
+
+body {
+	overflow-y: scroll;
+	font-family: "Manrope", system-ui, -apple-system, sans-serif;
+}
