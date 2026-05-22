@@ -41,9 +41,12 @@ const Header = () => {
         >
           Reviews
         </Link>
-        <a href="#contact" className="text-[#a1b0cf] transition-colors hover:text-[#f5f7ff]">
+        <Link
+          to="/contact"
+          className="text-[#a1b0cf] transition-colors hover:text-[#f5f7ff]"
+        >
           Contact
-        </a>
+        </Link>
       </nav>
       <button
         type="button"
