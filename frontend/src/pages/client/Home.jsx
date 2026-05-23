@@ -3,6 +3,7 @@ import ServicesSection from '../../components/ServicesSection'
 import GallerySection from '../../components/GallerySection'
 import ReviewsSection from '../../components/ReviewsSection'
 import ContactSection from '../../components/ContactSection'
+import Footer from '../../components/Footer'
 import homepageImage from '../../assets/homepage.jpeg'
 
 const Home = () => {
@@ -77,7 +78,7 @@ const Home = () => {
           className="relative order-first grid place-items-center lg:order-none"
           aria-label="Service preview"
         >
-        <div className="relative h-[320px] w-full max-w-[460px] overflow-hidden rounded-[28px] border border-white/10 bg-gradient-to-b from-[#173255] to-[#0f223e] shadow-[0_30px_60px_rgba(5,10,24,0.6)]">
+        <div className="relative h-[380px] w-full max-w-[460px] overflow-hidden rounded-[28px] border border-white/10 bg-gradient-to-b from-[#173255] to-[#0f223e] shadow-[0_30px_60px_rgba(5,10,24,0.6)]">
             <img
               className="h-full w-full object-cover opacity-90"
               src={homepageImage}
@@ -124,6 +125,10 @@ const Home = () => {
 
       <div className="relative z-10 -mx-[clamp(20px,6vw,72px)] bg-[#f5f9ff]">
         <ContactSection />
+      </div>
+
+      <div className="relative z-10 -mx-[clamp(20px,6vw,72px)]">
+        <Footer />
       </div>
     </div>
   )
