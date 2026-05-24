@@ -1,5 +1,6 @@
 import Header from '../../components/Header'
 import ServicesSection from '../../components/ServicesSection'
+import Footer from '../../components/Footer'
 
 const Service = () => {
   return (
@@ -10,6 +11,10 @@ const Service = () => {
       <Header />
       <div className="relative z-10 mt-10">
         <ServicesSection withContainer={false} />
+      </div>
+
+      <div className="relative z-10 mt-16 -mx-[clamp(20px,6vw,72px)]">
+        <Footer />
       </div>
     </div>
   )
