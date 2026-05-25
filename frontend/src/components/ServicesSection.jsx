@@ -1,3 +1,4 @@
+import React, { useState } from 'react'
 import deepCleaningImage from '../assets/deepcleaning.jpeg'
 import officeCleaningImage from '../assets/officecleaning.jpeg'
 import sofaCleaningImage from '../assets/sofacleaning.jpeg'
@@ -50,7 +51,11 @@ const services = [
   },
 ]
 
+import BookingModal from './BookingModal'
+
 const ServicesSection = ({ withContainer = true, sectionId = 'services' }) => {
+  const [open, setOpen] = useState(false)
+  const [selected, setSelected] = useState(null)
   const sectionContent = (
     <section
       id={sectionId}
@@ -102,6 +107,7 @@ const ServicesSection = ({ withContainer = true, sectionId = 'services' }) => {
                 </span>
                 <button
                   type="button"
+                  onClick={() => { setSelected(service); setOpen(true) }}
                   className="rounded-xl border border-[#22b7b0] px-4 py-2 text-[13px] font-semibold text-[#22b7b0] transition group-hover:bg-[#22b7b0] group-hover:text-white"
                 >
                   Book
@@ -115,12 +121,18 @@ const ServicesSection = ({ withContainer = true, sectionId = 'services' }) => {
   )
 
   if (!withContainer) {
-    return sectionContent
+    return (
+      <>
+        {sectionContent}
+        <BookingModal open={open} onClose={() => setOpen(false)} service={selected} />
+      </>
+    )
   }
 
   return (
     <div className="rounded-[32px] bg-[#f7f9fc] px-6 py-8 sm:px-10 lg:px-16">
       {sectionContent}
+      <BookingModal open={open} onClose={() => setOpen(false)} service={selected} />
     </div>
   )
 }
