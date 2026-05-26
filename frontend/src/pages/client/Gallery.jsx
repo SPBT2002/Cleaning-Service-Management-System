@@ -1,5 +1,6 @@
 import Header from '../../components/Header'
 import GallerySection from '../../components/GallerySection'
+import Footer from '../../components/Footer'
 
 const Gallery = () => {
   return (
@@ -10,6 +11,10 @@ const Gallery = () => {
       <Header />
       <div className="relative z-10 mt-10">
         <GallerySection />
+      </div>
+
+      <div className="relative z-10 mt-16 -mx-[clamp(20px,6vw,72px)]">
+        <Footer />
       </div>
     </div>
   )
