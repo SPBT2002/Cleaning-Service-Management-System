@@ -64,7 +64,7 @@ const GallerySection = ({ variant = 'dark' }) => {
             isLight ? 'text-[#6b7280]' : 'text-[#a1b0cf]'
           }`}
         >
-          Every space we touch gets the CleanEase treatment - see the results for
+          Every space we touch gets the CleanMaster treatment - see the results for
           yourself.
         </p>
       </div>
