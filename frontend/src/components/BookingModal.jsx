@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import { api } from '../lib/apiClient'
+import { getToken } from '../lib/authStorage'
 
 export default function BookingModal({ open, onClose, service }) {
+  const navigate = useNavigate()
   const [step, setStep] = useState(1)
   const [form, setForm] = useState({ name: '', phone: '', email: '', address: '', notes: '', date: '' })
   const [selectedSlot, setSelectedSlot] = useState(null)
   const [errors, setErrors] = useState({})
+  const [submitting, setSubmitting] = useState(false)
 
   useEffect(() => {
     if (open) {
@@ -111,16 +115,46 @@ export default function BookingModal({ open, onClose, service }) {
             <div className="flex items-center gap-4">
               <button onClick={()=>setStep(1)} className="rounded-lg border border-[#11c1a8] px-6 py-3 text-[#0f172a]">Back</button>
               <button
-                onClick={()=>{
+                disabled={submitting}
+                onClick={async ()=>{
                   if (!form.date) { setErrors({generic: 'Please select a date.'}); return }
                   if (!selectedSlot) { setErrors({generic: 'Please select a time slot.'}); return }
+
+                  const token = getToken()
+                  if (!token) {
+                    setErrors({ generic: 'Please sign in before booking.' })
+                    onClose()
+                    navigate('/signin')
+                    return
+                  }
+
                   setErrors({})
-                  onClose();
-                  alert(`Booking confirmed — ${service?.title} on ${form.date} at ${selectedSlot}`)
+
+                  try {
+                    setSubmitting(true)
+                    await api.post('/bookings', {
+                      customerName: form.name,
+                      email: form.email,
+                      phone: form.phone,
+                      address: form.address,
+                      notes: form.notes,
+                      serviceName: service?.title || 'Service',
+                      date: form.date,
+                      timeSlot: selectedSlot,
+                    })
+
+                    onClose()
+                    alert(`Booking confirmed — ${service?.title} on ${form.date} at ${selectedSlot}`)
+                  } catch (err) {
+                    setErrors({ generic: err.message || 'Booking failed' })
+                  } finally {
+                    setSubmitting(false)
+                  }
                 }}
                 className="ml-auto rounded-lg bg-gradient-to-r from-[#11c1a8] to-[#3aa7ff] px-6 py-3 text-white font-semibold"
-              >Confirm Booking</button>
+              >{submitting ? 'Confirming...' : 'Confirm Booking'}</button>
             </div>
+            {errors.generic && <p className="text-sm text-red-500">{errors.generic}</p>}
           </div>
         )}
       </div>
