@@ -1,18 +1,58 @@
-import React, { useSyncExternalStore } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import AdminLayout from '../../components/admin/AdminLayout'
-import { getBookingsSnapshot, subscribe } from '../../data/adminBookingsStore'
+import { api } from '../../lib/apiClient'
+import { getToken, getUser } from '../../lib/authStorage'
 
 export default function AdminDashboard() {
-  const bookings = useSyncExternalStore(subscribe, getBookingsSnapshot, getBookingsSnapshot)
+  const navigate = useNavigate()
+  const [dashboard, setDashboard] = useState({
+    stats: {
+      totalBookings: 0,
+      confirmedCount: 0,
+      pendingCount: 0,
+      completedCount: 0,
+      cancelledCount: 0,
+    },
+    recentBookings: [],
+  })
+
+  useEffect(() => {
+    const token = getToken()
+    const user = getUser()
+
+    if (!token || user?.role !== 'admin') {
+      navigate('/signin')
+      return
+    }
+
+    const loadDashboard = async () => {
+      try {
+        const data = await api.get('/admin/stats')
+        setDashboard(data)
+      } catch (err) {
+        if (/not authorized|admin access|required|token/i.test(err.message)) {
+          navigate('/signin')
+        }
+      }
+    }
+
+    loadDashboard()
+  }, [navigate])
 
   const stats = [
-    { label: 'Total Bookings', value: bookings.length },
-    { label: 'Confirmed', value: bookings.filter((booking) => booking.status === 'Confirmed').length },
-    { label: 'Pending', value: bookings.filter((booking) => booking.status === 'Pending').length },
-    { label: 'Services', value: new Set(bookings.map((booking) => booking.service)).size },
+    { label: 'Total Bookings', value: dashboard.stats.totalBookings },
+    { label: 'Confirmed', value: dashboard.stats.confirmedCount },
+    { label: 'Pending', value: dashboard.stats.pendingCount },
+    { label: 'Completed', value: dashboard.stats.completedCount },
   ]
 
-  const recent = bookings.slice(0, 5)
+  const recent = dashboard.recentBookings.slice(0, 5).map((booking) => ({
+    name: booking.customerName,
+    service: booking.serviceName,
+    date: booking.date,
+    status: booking.status,
+  }))
 
   return (
     <AdminLayout>
