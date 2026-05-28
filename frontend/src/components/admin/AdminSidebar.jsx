@@ -1,7 +1,15 @@
 import React from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
+import { clearAuthSession } from '../../lib/authStorage'
 
 export default function AdminSidebar() {
+  const navigate = useNavigate()
+
+  const handleLogout = () => {
+    clearAuthSession()
+    navigate('/signin')
+  }
+
   return (
     <aside className="hidden md:flex flex-col w-64 bg-[#07121a] text-white p-4 gap-6 h-screen">
       <div className="flex items-center gap-3 px-2">
@@ -20,7 +28,7 @@ export default function AdminSidebar() {
       </nav>
 
       <div className="px-2">
-        <button className="w-full rounded-md bg-[#ce2a2a] px-3 py-2 text-sm">Logout</button>
+        <button onClick={handleLogout} className="w-full rounded-md bg-[#ce2a2a] px-3 py-2 text-sm">Logout</button>
       </div>
     </aside>
   )
