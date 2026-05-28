@@ -1,61 +1,43 @@
-import React, { useState } from 'react'
-import deepCleaningImage from '../assets/deepcleaning.jpeg'
-import officeCleaningImage from '../assets/officecleaning.jpeg'
-import sofaCleaningImage from '../assets/sofacleaning.jpeg'
-import kitchenCleaningImage from '../assets/kitchencleaning.jpeg'
-import bathroomCleaningImage from '../assets/bathroomcleaning.jpeg'
-import carpetCleaningImage from '../assets/carpetcleaning.jpeg'
-
-const services = [
-  {
-    title: 'Deep Cleaning',
-    description: 'Full home deep clean, top to bottom.',
-    price: 'From $89',
-    iconLabel: 'DC',
-    image: deepCleaningImage,
-  },
-  {
-    title: 'Office Cleaning',
-    description: 'Professional workspace sanitization.',
-    price: 'From $69',
-    iconLabel: 'OC',
-    image: officeCleaningImage,
-  },
-  {
-    title: 'Sofa Cleaning',
-    description: 'Fabric and leather sofa restoration.',
-    price: 'From $49',
-    iconLabel: 'SC',
-    image: sofaCleaningImage,
-  },
-  {
-    title: 'Kitchen Cleaning',
-    description: 'Grease-free, spotless kitchens.',
-    price: 'From $55',
-    iconLabel: 'KC',
-    image: kitchenCleaningImage,
-  },
-  {
-    title: 'Bathroom Cleaning',
-    description: 'Tile, grout and fixture detailing.',
-    price: 'From $39',
-    iconLabel: 'BC',
-    image: bathroomCleaningImage,
-  },
-  {
-    title: 'Carpet Cleaning',
-    description: 'Steam and dry carpet treatment.',
-    price: 'From $59',
-    iconLabel: 'CC',
-    image: carpetCleaningImage,
-  },
-]
-
 import BookingModal from './BookingModal'
+import { useEffect, useState } from 'react'
+import { api } from '../lib/apiClient'
+import { serviceFallbackImages } from '../lib/contentMaps'
+
+const defaultServices = [
+  { title: 'Deep Cleaning', description: 'Full home deep clean, top to bottom.', price: 'From $89' },
+  { title: 'Office Cleaning', description: 'Professional workspace sanitization.', price: 'From $69' },
+  { title: 'Sofa Cleaning', description: 'Fabric and leather sofa restoration.', price: 'From $49' },
+  { title: 'Kitchen Cleaning', description: 'Grease-free, spotless kitchens.', price: 'From $55' },
+  { title: 'Bathroom Cleaning', description: 'Tile, grout and fixture detailing.', price: 'From $39' },
+  { title: 'Carpet Cleaning', description: 'Steam and dry carpet treatment.', price: 'From $59' },
+]
 
 const ServicesSection = ({ withContainer = true, sectionId = 'services' }) => {
   const [open, setOpen] = useState(false)
   const [selected, setSelected] = useState(null)
+  const [services, setServices] = useState(defaultServices)
+
+  useEffect(() => {
+    const loadServices = async () => {
+      try {
+        const data = await api.get('/services')
+        if (Array.isArray(data) && data.length > 0) {
+          setServices(
+            data.map((service) => ({
+              title: service.name,
+              description: service.description,
+              price: `From $${service.price}`,
+              image: service.image || serviceFallbackImages[service.name],
+            })),
+          )
+        }
+      } catch {
+        // keep fallback data when backend is unavailable
+      }
+    }
+
+    loadServices()
+  }, [])
   const sectionContent = (
     <section
       id={sectionId}
@@ -92,7 +74,7 @@ const ServicesSection = ({ withContainer = true, sectionId = 'services' }) => {
                   className="grid h-16 w-16 place-items-center rounded-[18px] bg-white text-[16px] font-semibold text-[#22b7b0] shadow-[0_8px_20px_rgba(15,23,42,0.08)]"
                   aria-hidden="true"
                 >
-                  {service.iconLabel}
+                  {service.title.split(' ').map((word) => word[0]).join('').slice(0, 2)}
                 </span>
               )}
             </div>
