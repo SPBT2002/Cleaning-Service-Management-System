@@ -1,42 +1,6 @@
-import homeCleaningImage from '../assets/homecleaning2.jpeg'
-import kitchenCleaningImage from '../assets/kitchenbf2.jpeg'
-import bathroomCleaningImage from '../assets/bathrombf2.jpeg'
-import sofaCleaningImage from '../assets/sofabf1.jpeg'
-import officeCleaningImage from '../assets/officebf1.jpeg'
-import carpetCleaningImage from '../assets/carpetbf1.jpeg'
-
-const galleryItems = [
-  {
-    title: 'Home',
-    tagColor: 'text-[#37d0ff] bg-[#103753] border-[#1c547b]',
-    image: homeCleaningImage,
-  },
-  {
-    title: 'Kitchen',
-    tagColor: 'text-[#37e8a1] bg-[#0b3c32] border-[#155c4c]',
-    image: kitchenCleaningImage,
-  },
-  {
-    title: 'Bathroom',
-    tagColor: 'text-[#b69cff] bg-[#2a1b4a] border-[#3a2566]',
-    image: bathroomCleaningImage,
-  },
-  {
-    title: 'Sofa',
-    tagColor: 'text-[#ffb053] bg-[#4a2a0f] border-[#663713]',
-    image: sofaCleaningImage,
-  },
-  {
-    title: 'Office',
-    tagColor: 'text-[#9fc3ff] bg-[#152848] border-[#1e3661]',
-    image: officeCleaningImage,
-  },
-  {
-    title: 'Carpet',
-    tagColor: 'text-[#ff9ac1] bg-[#4a1831] border-[#662141]',
-    image: carpetCleaningImage,
-  },
-]
+import { useEffect, useState } from 'react'
+import { api } from '../lib/apiClient'
+import { galleryFallbackImages } from '../lib/contentMaps'
 
 const cardStyles = [
   'from-[#1d6aa3] to-[#124b74]',
@@ -47,8 +11,38 @@ const cardStyles = [
   'from-[#c42a74] to-[#941f5a]',
 ]
 
+const defaultGalleryItems = [
+  { title: 'Home', image: galleryFallbackImages.Home },
+  { title: 'Kitchen', image: galleryFallbackImages.Kitchen },
+  { title: 'Bathroom', image: galleryFallbackImages.Bathroom },
+  { title: 'Sofa', image: galleryFallbackImages.Sofa },
+  { title: 'Office', image: galleryFallbackImages.Office },
+  { title: 'Carpet', image: galleryFallbackImages.Carpet },
+]
+
 const GallerySection = ({ variant = 'dark' }) => {
   const isLight = variant === 'light'
+  const [galleryItems, setGalleryItems] = useState(defaultGalleryItems)
+
+  useEffect(() => {
+    const loadGallery = async () => {
+      try {
+        const data = await api.get('/gallery')
+        if (Array.isArray(data) && data.length > 0) {
+          setGalleryItems(
+            data.map((item) => ({
+              title: item.title,
+              image: item.image || galleryFallbackImages[item.title] || galleryFallbackImages.Home,
+            })),
+          )
+        }
+      } catch {
+        // fallback stays on screen
+      }
+    }
+
+    loadGallery()
+  }, [])
 
   return (
     <section
