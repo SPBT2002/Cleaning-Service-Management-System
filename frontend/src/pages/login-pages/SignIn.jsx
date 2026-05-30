@@ -1,10 +1,38 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { api } from "../../lib/apiClient";
+import { setAuthSession } from "../../lib/authStorage";
 
 export default function SignIn() {
 	const [showPassword, setShowPassword] = useState(false);
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
+	const [loading, setLoading] = useState(false);
+	const [error, setError] = useState("");
+	const navigate = useNavigate();
 
 	const toggleShow = () => setShowPassword((s) => !s);
+
+	const handleSubmit = async (event) => {
+		event.preventDefault();
+		setError("");
+
+		if (!email || !password) {
+			setError("Email and password are required.");
+			return;
+		}
+
+		try {
+			setLoading(true);
+			const data = await api.post('/auth/login', { email, password });
+			setAuthSession(data.token, data.user);
+			navigate(data.user?.role === 'admin' ? '/admin' : '/');
+		} catch (err) {
+			setError(err.message || 'Login failed');
+		} finally {
+			setLoading(false);
+		}
+	};
 
 	return (
 		<div className="min-h-screen flex items-center justify-center bg-[#0d1a2e] py-12">
@@ -32,12 +60,14 @@ export default function SignIn() {
 					<p className="mt-2 text-sm text-[#9fb0c9]">Sign in to continue to CleanMaster</p>
 				</div>
 
-				<form className="space-y-4">
+				<form className="space-y-4" onSubmit={handleSubmit}>
 					<label className="block text-[13px] font-medium text-[#9fb0c9]">
 						Email Address
 						<input
 							type="email"
 							placeholder="user@email.com"
+							value={email}
+							onChange={(e) => setEmail(e.target.value)}
 							className="mt-3 w-full rounded-2xl border border-white/10 bg-[#2f3a4f] px-6 py-4 text-[15px] text-white placeholder:text-[#8b97a8] outline-none transition focus:border-[#22d2c8]"
 						/>
 					</label>
@@ -48,6 +78,8 @@ export default function SignIn() {
 							<input
 								type={showPassword ? "text" : "password"}
 								placeholder="********"
+								value={password}
+								onChange={(e) => setPassword(e.target.value)}
 								className="w-full bg-transparent text-[15px] text-white placeholder:text-[#8b97a8] outline-none"
 							/>
 							<button
@@ -62,11 +94,14 @@ export default function SignIn() {
 					</label>
 
 					<button
-						type="button"
+						type="submit"
+						disabled={loading}
 						className="w-full rounded-2xl bg-gradient-to-r from-[#11c1a8] to-[#3aa7ff] px-6 py-4 text-[16px] font-semibold text-white shadow-[0_18px_40px_rgba(17,193,168,0.22)]"
 					>
-						Sign In
+						{loading ? 'Signing In...' : 'Sign In'}
 					</button>
+
+					{error && <p className="text-center text-sm text-red-300">{error}</p>}
 
 					<p className="mt-4 text-center text-[13px] text-[#9fb0c9]">
 						Don't have an account? <Link to="/signup" className="text-[#22d2c8]">Sign up</Link>
